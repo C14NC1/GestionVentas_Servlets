@@ -1,0 +1,6 @@
+Repositorio: GestionVentas_Servlets
+Autor: Luigi cianci
+Fecha: 8 Septiembre 2026
+Descripción: Proyecto académico de gestión de ventas con Java Servlets y JSP.
+Corre en: Apache Tomcat 9
+URL: https://github.com/C14NC1/GestionVentas_Servlets
