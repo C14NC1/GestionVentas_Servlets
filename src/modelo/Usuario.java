@@ -1,5 +1,6 @@
 package modelo;
 
+// Representa un usuario del sistema
 public class Usuario {
     private int idUsuario;
     private String nombre;
@@ -9,6 +10,7 @@ public class Usuario {
 
     public Usuario() {}
 
+    // Crear un usuario con sus credenciales y rol
     public Usuario(int idUsuario, String nombre, String correo, String contraseña, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;

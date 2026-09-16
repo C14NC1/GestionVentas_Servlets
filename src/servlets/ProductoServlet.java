@@ -14,6 +14,7 @@ public class ProductoServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Consultar y mostrar la lista de productos
         ProductoDAO productoDAO = new ProductoDAO();
         List<Producto> productos = productoDAO.listarProductos();
         request.setAttribute("productos", productos);
@@ -22,11 +23,13 @@ public class ProductoServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Recibir los datos del producto
         String nombre = request.getParameter("nombre");
         String descripcion = request.getParameter("descripcion");
         double precio;
         int stock;
         try {
+            // Convertir precio y stock a valores numéricos
             precio = Double.parseDouble(request.getParameter("precio"));
             stock = Integer.parseInt(request.getParameter("stock"));
         } catch (NumberFormatException | NullPointerException e) {
@@ -35,12 +38,14 @@ public class ProductoServlet extends HttpServlet {
         }
 
         if (nombre == null || nombre.trim().isEmpty() || precio < 0 || stock < 0) {
+            // Validar los datos antes de guardarlos
             response.sendRedirect(request.getContextPath() + "/jsp/productos.jsp?error=datos");
             return;
         }
 
         Producto nuevo = new Producto(0, nombre.trim(), descripcion, precio, stock);
         ProductoDAO productoDAO = new ProductoDAO();
+        // Guardar el producto y actualizar la lista
         productoDAO.insertarProducto(nuevo);
 
         response.sendRedirect(request.getContextPath() + "/ProductoServlet");

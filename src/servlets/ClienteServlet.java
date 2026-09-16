@@ -14,6 +14,7 @@ public class ClienteServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Consultar y mostrar la lista de clientes
         ClienteDAO clienteDAO = new ClienteDAO();
         List<Cliente> clientes = clienteDAO.listarClientes();
         request.setAttribute("clientes", clientes);
@@ -22,18 +23,21 @@ public class ClienteServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Recibir los datos del formulario
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
         String telefono = request.getParameter("telefono");
         String direccion = request.getParameter("direccion");
 
         if (nombre == null || nombre.trim().isEmpty()) {
+            // Rechazar registros sin nombre
             response.sendRedirect(request.getContextPath() + "/jsp/clientes.jsp?error=datos");
             return;
         }
 
         Cliente nuevo = new Cliente(0, nombre.trim(), correo, telefono, direccion);
         ClienteDAO clienteDAO = new ClienteDAO();
+        // Guardar el nuevo cliente y actualizar la lista
         clienteDAO.insertarCliente(nuevo);
 
         response.sendRedirect(request.getContextPath() + "/ClienteServlet");

@@ -1,5 +1,6 @@
 package modelo;
 
+// Representa un producto disponible para la venta
 public class Producto {
     private int idProducto;
     private String nombre;
@@ -9,6 +10,7 @@ public class Producto {
 
     public Producto() {}
 
+    // Crear un producto con precio y cantidad disponible
     public Producto(int idProducto, String nombre, String descripcion, double precio, int stock) {
         this.idProducto = idProducto;
         this.nombre = nombre;

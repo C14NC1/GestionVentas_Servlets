@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.Date;
 
+// Representa la información principal de una venta
 public class Venta {
     private int idVenta;
     private Date fecha;
@@ -11,6 +12,7 @@ public class Venta {
 
     public Venta() {}
 
+    // Crear una venta asociada a un cliente y usuario
     public Venta(int idVenta, Date fecha, int idCliente, int idUsuario, double total) {
         this.idVenta = idVenta;
         this.fecha = fecha;

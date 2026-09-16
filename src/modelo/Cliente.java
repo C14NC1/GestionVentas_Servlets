@@ -1,5 +1,6 @@
 package modelo;
 
+// Representa los datos de un cliente
 public class Cliente {
     private int idCliente;
     private String nombre;
@@ -9,6 +10,7 @@ public class Cliente {
 
     public Cliente() {}
 
+    // Crear un cliente con sus datos principales
     public Cliente(int idCliente, String nombre, String correo, String telefono, String direccion) {
         this.idCliente = idCliente;
         this.nombre = nombre;

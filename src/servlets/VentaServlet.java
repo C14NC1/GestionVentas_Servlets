@@ -16,6 +16,7 @@ public class VentaServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Convertir los datos de la venta recibidos del formulario
         int idCliente;
         int idUsuario;
         double total;
@@ -36,12 +37,14 @@ public class VentaServlet extends HttpServlet {
 
         if (idCliente <= 0 || idUsuario <= 0 || idProducto <= 0 || cantidad <= 0
                 || total < 0 || precioUnitario < 0) {
+            // Validar identificadores y valores positivos
             response.sendRedirect(request.getContextPath() + "/jsp/ventas.jsp?error=datos");
             return;
         }
 
         Venta nuevaVenta = new Venta(0, new Date(), idCliente, idUsuario, total);
         VentaDAO ventaDAO = new VentaDAO();
+        // Guardar la venta principal y obtener su identificador
         int idVentaGenerado = ventaDAO.insertarVenta(nuevaVenta);
 
         if (idVentaGenerado <= 0) {
@@ -51,6 +54,7 @@ public class VentaServlet extends HttpServlet {
 
         double subtotal = cantidad * precioUnitario;
 
+        // Crear y guardar el detalle asociado a la venta
         DetalleVenta detalle = new DetalleVenta(0, idVentaGenerado, idProducto, cantidad, precioUnitario, subtotal);
         DetalleVentaDAO detalleDAO = new DetalleVentaDAO();
         detalleDAO.insertarDetalle(detalle);
@@ -60,6 +64,7 @@ public class VentaServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Consultar y mostrar las ventas registradas
         VentaDAO ventaDAO = new VentaDAO();
         request.setAttribute("ventas", ventaDAO.listarVentas());
         request.getRequestDispatcher("/jsp/ventas.jsp").forward(request, response);

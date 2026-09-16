@@ -1,5 +1,6 @@
 package modelo;
 
+// Representa un producto dentro de una venta
 public class DetalleVenta {
     private int idDetalle;
     private int idVenta;
@@ -10,6 +11,7 @@ public class DetalleVenta {
 
     public DetalleVenta() {}
 
+    // Crear el detalle con cantidad, precio y subtotal
     public DetalleVenta(int idDetalle, int idVenta, int idProducto, int cantidad, double precioUnitario, double subtotal) {
         this.idDetalle = idDetalle;
         this.idVenta = idVenta;
