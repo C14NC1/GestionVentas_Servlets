@@ -13,21 +13,21 @@ public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Leer las credenciales enviadas por el usuario
         request.setCharacterEncoding("UTF-8");
         String correo = request.getParameter("correo");
         String contraseña = request.getParameter("contrasena");
+        if (contraseña == null || contraseña.isEmpty()) {
+            contraseña = request.getParameter("contraseña");
+        }
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         Usuario usuario = usuarioDAO.validarLogin(correo, contraseña);
 
         if (usuario != null) {
-            // Crear la sesión cuando el login es válido
             HttpSession sesion = request.getSession();
             sesion.setAttribute("usuario", usuario);
             response.sendRedirect(request.getContextPath() + "/jsp/index.jsp");
         } else {
-            // Volver al login si las credenciales no coinciden
             response.sendRedirect(request.getContextPath() + "/jsp/login.jsp?error=1");
         }
     }

@@ -13,23 +13,23 @@ public class RegistroUsuarioServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Leer los datos del formulario de registro
         request.setCharacterEncoding("UTF-8");
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
         String contraseña = request.getParameter("contrasena");
+        if (contraseña == null || contraseña.isEmpty()) {
+            contraseña = request.getParameter("contraseña");
+        }
         String rol = request.getParameter("rol");
 
         if (nombre == null || nombre.trim().isEmpty() || correo == null || correo.trim().isEmpty()
                 || contraseña == null || contraseña.isEmpty() || rol == null || rol.trim().isEmpty()) {
-            // Verificar que los campos obligatorios estén completos
             response.sendRedirect(request.getContextPath() + "/jsp/registro.jsp?error=datos");
             return;
         }
 
         Usuario nuevo = new Usuario(0, nombre.trim(), correo.trim(), contraseña, rol.trim());
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        // Registrar el usuario y controlar posibles errores de base de datos
         if (!usuarioDAO.insertarUsuario(nuevo)) {
             response.sendRedirect(request.getContextPath() + "/jsp/registro.jsp?error=bd");
             return;
