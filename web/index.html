@@ -2,66 +2,53 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Cafetería La Buena Taza</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f7f1ea; color: #2c1b12; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 60px; }
-        .hero { text-align: center; padding: 40px 20px 20px; }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .hero p { font-size: 1.1rem; color: #5f4638; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
-        .card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 8px 18px rgba(71,45,27,0.08); }
-        .card h3 { margin-top: 0; }
-        .precio { font-size: 1.6rem; color: #8a4d26; font-weight: bold; }
-        .stock { margin-top: 8px; color: #2d7d46; font-weight: bold; }
-        .acciones { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(44,27,18,0.96); padding: 18px 20px; text-align: center; }
-        .acciones a { display: inline-block; margin: 0 10px; color: white; text-decoration: none; background: #c77b3a; padding: 12px 22px; border-radius: 8px; font-weight: bold; }
-        .info { margin-top: 20px; background: #fffaf5; padding: 16px; border-left: 5px solid #c77b3a; border-radius: 8px; }
-    </style>
+    <title>Cafetería</title>
+    <link rel="stylesheet" href="CSS/estilos.css">
 </head>
-<body>
-    <div class="container">
+<body class="landing-page">
+    <div class="container landing-container">
         <div class="hero">
-            <h1>Cafetería La Buena Taza</h1>
+            <span class="badge">Cafetería</span>
+            <h1>Cafetería</h1>
             <p>Pan recién horneado y café de especialidad para cada momento del día.</p>
         </div>
 
-        <div class="info">
-            <strong>Importante:</strong> para ver productos o clientes debes registrarte e iniciar sesión. El administrador puede gestionar precios, agregar, editar y eliminar productos y clientes; el vendedor solo puede consultar y vender, pero no modificar estos datos.
+        <div class="info-box">
+            <strong>Importante:</strong> para ver productos o clientes debes registrarte e iniciar sesión. El administrador puede gestionar precios, productos y clientes; el vendedor puede vender y registrar ventas, pero no modificar la base de clientes o productos.
         </div>
 
-        <div class="grid">
-            <div class="card">
+        <div class="product-grid">
+            <div class="product-card">
                 <h3>Café Espresso</h3>
                 <p>Intenso y aromático, ideal para empezar con energía.</p>
                 <div class="precio">$1.800</div>
                 <div class="stock">En stock: 25</div>
             </div>
-            <div class="card">
+            <div class="product-card">
                 <h3>Café Latte</h3>
                 <p>Crema suave con un toque de dulzor y equilibrio.</p>
                 <div class="precio">$2.200</div>
                 <div class="stock">En stock: 18</div>
             </div>
-            <div class="card">
+            <div class="product-card">
                 <h3>Pan de Molde Integral</h3>
                 <p>Clásico y saludable para acompañar tu bebida.</p>
                 <div class="precio">$1.200</div>
                 <div class="stock">En stock: 30</div>
             </div>
-            <div class="card">
+            <div class="product-card">
                 <h3>Medialuna</h3>
                 <p>Horneada al momento, crocante por fuera y suave por dentro.</p>
                 <div class="precio">$900</div>
                 <div class="stock">En stock: 40</div>
             </div>
-            <div class="card">
+            <div class="product-card">
                 <h3>Café Capuccino</h3>
                 <p>Textura cremosa con sabor a cacao y vainilla.</p>
                 <div class="precio">$2.400</div>
                 <div class="stock">En stock: 16</div>
             </div>
-            <div class="card">
+            <div class="product-card">
                 <h3>Pan con Queso</h3>
                 <p>Perfecto para un desayuno completo y sabroso.</p>
                 <div class="precio">$1.500</div>
@@ -70,9 +57,9 @@
         </div>
     </div>
 
-    <div class="acciones">
-        <a href="jsp/registro.jsp">Registrarse</a>
-        <a href="jsp/login.jsp">Iniciar sesión</a>
+    <div class="bottom-actions">
+        <a href="jsp/registro.jsp" class="bottom-btn">Registrarse</a>
+        <a href="jsp/login.jsp" class="bottom-btn">Iniciar sesión</a>
     </div>
 </body>
 </html>

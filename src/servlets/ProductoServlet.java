@@ -49,6 +49,7 @@ public class ProductoServlet extends HttpServlet {
         }
 
         Usuario usuario = obtenerUsuarioLogueado(request);
+        // Solo el administrador puede modificar el catálogo.
         if (!"admin".equalsIgnoreCase(usuario.getRol())) {
             response.sendRedirect(request.getContextPath() + "/ProductoServlet?error=permiso");
             return;

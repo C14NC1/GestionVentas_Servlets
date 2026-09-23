@@ -8,9 +8,9 @@ import java.util.List;
 public class VentaDAO {
     Conexion conexion = new Conexion();
 
-    // Insertar venta y devolver ID generado
     public int insertarVenta(Venta venta) {
         int idGenerado = -1;
+        // Obtiene el ID para relacionar después el detalle de la venta.
         String sql = "INSERT INTO ventas (fecha, id_cliente, id_usuario, total) VALUES (?,?,?,?)";
         try (Connection con = conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,10 +31,36 @@ public class VentaDAO {
         return idGenerado;
     }
 
-    // Listar ventas
+    public boolean actualizarVenta(int idVenta, int idCliente, int idUsuario, double total) {
+        String sql = "UPDATE ventas SET id_cliente=?, id_usuario=?, total=? WHERE id_venta=?";
+        try (Connection con = conexion.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idCliente);
+            ps.setInt(2, idUsuario);
+            ps.setDouble(3, total);
+            ps.setInt(4, idVenta);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error en actualizarVenta: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean eliminarVenta(int idVenta) {
+        String sql = "DELETE FROM ventas WHERE id_venta=?";
+        try (Connection con = conexion.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idVenta);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error en eliminarVenta: " + e.getMessage());
+            return false;
+        }
+    }
+
     public List<Venta> listarVentas() {
         List<Venta> lista = new ArrayList<>();
-        String sql = "SELECT * FROM ventas";
+        String sql = "SELECT * FROM ventas ORDER BY fecha DESC";
         try (Connection con = conexion.getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {

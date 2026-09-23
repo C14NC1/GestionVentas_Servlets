@@ -9,6 +9,7 @@ public class ProductoDAO {
     Conexion conexion = new Conexion();
 
     public void insertarProducto(Producto producto) {
+        // Inserta un producto nuevo en el catálogo.
         String sql = "INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (?,?,?,?)";
         try (Connection con = conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
