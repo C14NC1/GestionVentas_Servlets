@@ -15,20 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Clientes</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f8f2ee; margin: 0; color: #2c1b12; }
-        .wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px 30px; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { border: 1px solid #dcc6b3; padding: 10px; text-align: left; }
-        th { background: #f0d9c5; }
-        .admin-panel { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
-        form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-        input, button { padding: 10px; border: 1px solid #d7c3ad; border-radius: 8px; }
-        button { background: #8a4d26; color: white; font-weight: bold; cursor: pointer; }
-        .danger { background: #a33d2e; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .link { text-decoration: none; color: #8a4d26; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/estilos.css">
 </head>
 <body>
     <div class="wrap">
@@ -40,17 +27,18 @@
         <% if (esAdmin) { %>
         <div class="admin-panel">
             <h3>Agregar nuevo cliente</h3>
-            <form action="${pageContext.request.contextPath}/ClienteServlet" method="post">
+            <form class="admin-form" action="${pageContext.request.contextPath}/ClienteServlet" method="post">
+                <input type="hidden" name="accion" value="agregar">
                 <input type="text" name="nombre" placeholder="Nombre" required>
                 <input type="email" name="correo" placeholder="Correo">
                 <input type="tel" name="telefono" placeholder="Teléfono">
                 <input type="text" name="direccion" placeholder="Dirección">
-                <button type="submit">Guardar cliente</button>
+                <button type="submit" class="btn btn-primary">Guardar cliente</button>
             </form>
         </div>
         <% } %>
 
-        <table>
+        <table class="data-table">
             <tr>
                 <th>ID</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Dirección</th>
                 <% if (esAdmin) { %><th>Acciones</th><% } %>
@@ -67,10 +55,10 @@
                 <td><%= c.getDireccion() %></td>
                 <% if (esAdmin) { %>
                 <td>
-                    <form action="${pageContext.request.contextPath}/ClienteServlet" method="post" style="display:inline; grid-template-columns: none; gap: 0;">
+                    <form class="inline-form" action="${pageContext.request.contextPath}/ClienteServlet" method="post">
                         <input type="hidden" name="accion" value="eliminar">
                         <input type="hidden" name="id_cliente" value="<%= c.getIdCliente() %>">
-                        <button type="submit" class="danger">Eliminar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </td>
                 <% } %>

@@ -94,25 +94,30 @@ public class ProductoServlet extends HttpServlet {
             return;
         }
 
-        String nombre = request.getParameter("nombre");
-        String descripcion = request.getParameter("descripcion");
-        double precio;
-        int stock;
-        try {
-            precio = Double.parseDouble(request.getParameter("precio"));
-            stock = Integer.parseInt(request.getParameter("stock"));
-        } catch (NumberFormatException | NullPointerException e) {
-            response.sendRedirect(request.getContextPath() + "/ProductoServlet?error=datos");
+        if (accion == null || "agregar".equals(accion)) {
+            String nombre = request.getParameter("nombre");
+            String descripcion = request.getParameter("descripcion");
+            double precio;
+            int stock;
+            try {
+                precio = Double.parseDouble(request.getParameter("precio"));
+                stock = Integer.parseInt(request.getParameter("stock"));
+            } catch (NumberFormatException | NullPointerException e) {
+                response.sendRedirect(request.getContextPath() + "/ProductoServlet?error=datos");
+                return;
+            }
+
+            if (nombre == null || nombre.trim().isEmpty() || precio < 0 || stock < 0) {
+                response.sendRedirect(request.getContextPath() + "/ProductoServlet?error=datos");
+                return;
+            }
+
+            Producto nuevo = new Producto(0, nombre.trim(), descripcion, precio, stock);
+            productoDAO.insertarProducto(nuevo);
+            response.sendRedirect(request.getContextPath() + "/ProductoServlet");
             return;
         }
 
-        if (nombre == null || nombre.trim().isEmpty() || precio < 0 || stock < 0) {
-            response.sendRedirect(request.getContextPath() + "/ProductoServlet?error=datos");
-            return;
-        }
-
-        Producto nuevo = new Producto(0, nombre.trim(), descripcion, precio, stock);
-        productoDAO.insertarProducto(nuevo);
-        response.sendRedirect(request.getContextPath() + "/ProductoServlet");
+        response.sendRedirect(request.getContextPath() + "/ProductoServlet?error=datos");
     }
 }

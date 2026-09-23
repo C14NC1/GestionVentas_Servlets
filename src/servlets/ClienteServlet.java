@@ -70,18 +70,23 @@ public class ClienteServlet extends HttpServlet {
             return;
         }
 
-        String nombre = request.getParameter("nombre");
-        String correo = request.getParameter("correo");
-        String telefono = request.getParameter("telefono");
-        String direccion = request.getParameter("direccion");
+        if (accion == null || "agregar".equals(accion)) {
+            String nombre = request.getParameter("nombre");
+            String correo = request.getParameter("correo");
+            String telefono = request.getParameter("telefono");
+            String direccion = request.getParameter("direccion");
 
-        if (nombre == null || nombre.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/ClienteServlet?error=datos");
+            if (nombre == null || nombre.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/ClienteServlet?error=datos");
+                return;
+            }
+
+            Cliente nuevo = new Cliente(0, nombre.trim(), correo, telefono, direccion);
+            clienteDAO.insertarCliente(nuevo);
+            response.sendRedirect(request.getContextPath() + "/ClienteServlet");
             return;
         }
 
-        Cliente nuevo = new Cliente(0, nombre.trim(), correo, telefono, direccion);
-        clienteDAO.insertarCliente(nuevo);
-        response.sendRedirect(request.getContextPath() + "/ClienteServlet");
+        response.sendRedirect(request.getContextPath() + "/ClienteServlet?error=datos");
     }
 }

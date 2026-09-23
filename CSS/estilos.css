@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5efe9;
+    margin: 0;
+    color: #2d1d14;
+}
+
+.wrap {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.link {
+    color: #8a4d26;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.admin-panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.admin-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.table-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #dcc6b3;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.data-table th {
+    background: #f0d9c5;
+}
+
+input,
+button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d7c3ad;
+    font-size: 14px;
+}
+
+input {
+    background: #fff;
+}
+
+.btn {
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    color: #fff;
+}
+
+.btn-primary {
+    background: #8a4d26;
+}
+
+.btn-danger {
+    background: #a33d2e;
+}
+
+h2, h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .wrap {
+        padding: 0 12px 25px;
+    }
+}
