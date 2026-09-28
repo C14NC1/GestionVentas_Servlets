@@ -24,6 +24,12 @@
             <a class="link" href="${pageContext.request.contextPath}/jsp/index.jsp">Volver al inicio</a>
         </div>
 
+        <% if ("cliente_eliminado".equals(request.getParameter("resultado"))) { %>
+        <p role="status">Cliente eliminado. Las ventas históricas se conservaron sin cliente asociado.</p>
+        <% } else if ("cliente_no_eliminado".equals(request.getParameter("error"))) { %>
+        <p role="alert">No se pudo eliminar el cliente. Inténtalo de nuevo.</p>
+        <% } %>
+
         <% if (esAdmin) { %>
         <div class="admin-panel">
             <h3>Agregar nuevo cliente</h3>

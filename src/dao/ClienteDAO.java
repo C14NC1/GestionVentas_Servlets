@@ -24,11 +24,30 @@ public class ClienteDAO {
     }
 
     public boolean eliminarCliente(int idCliente) {
-        String sql = "DELETE FROM clientes WHERE id_cliente=?";
-        try (Connection con = conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idCliente);
-            return ps.executeUpdate() > 0;
+        String desvincularVentas = "UPDATE ventas SET id_cliente=NULL WHERE id_cliente=?";
+        String eliminarCliente = "DELETE FROM clientes WHERE id_cliente=?";
+        Connection conexionBD = conexion.getConnection();
+        if (conexionBD == null) {
+            return false;
+        }
+
+        try (Connection con = conexionBD) {
+            con.setAutoCommit(false);
+
+            try (PreparedStatement psVentas = con.prepareStatement(desvincularVentas);
+                 PreparedStatement psCliente = con.prepareStatement(eliminarCliente)) {
+                psVentas.setInt(1, idCliente);
+                psVentas.executeUpdate();
+
+                psCliente.setInt(1, idCliente);
+                if (psCliente.executeUpdate() == 0) {
+                    con.rollback();
+                    return false;
+                }
+            }
+
+            con.commit();
+            return true;
         } catch (Exception e) {
             System.out.println("Error en eliminarCliente: " + e.getMessage());
             return false;

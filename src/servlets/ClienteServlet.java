@@ -44,6 +44,8 @@ public class ClienteServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         if (requiereLogin(request, response)) {
             return;
         }
@@ -61,12 +63,15 @@ public class ClienteServlet extends HttpServlet {
             String idParam = request.getParameter("id_cliente");
             try {
                 int idCliente = Integer.parseInt(idParam);
-                clienteDAO.eliminarCliente(idCliente);
+                if (!clienteDAO.eliminarCliente(idCliente)) {
+                    response.sendRedirect(request.getContextPath() + "/ClienteServlet?error=cliente_no_eliminado");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 response.sendRedirect(request.getContextPath() + "/ClienteServlet?error=datos");
                 return;
             }
-            response.sendRedirect(request.getContextPath() + "/ClienteServlet");
+            response.sendRedirect(request.getContextPath() + "/ClienteServlet?resultado=cliente_eliminado");
             return;
         }
 

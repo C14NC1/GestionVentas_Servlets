@@ -80,7 +80,7 @@
                         nombreCliente = "-";
                         nombreUsuario = "-";
                         nombreProducto = "-";
-                        if (clientes != null) {
+                        if (clientes != null && v.getIdCliente() > 0) {
                             for (Cliente c : clientes) {
                                 if (c.getIdCliente() == v.getIdCliente()) {
                                     nombreCliente = c.getNombre();
@@ -129,7 +129,7 @@
                             <input type="hidden" name="id_venta" value="<%= v.getIdVenta() %>">
                             <select name="id_cliente" required>
                                 <% if (clientes != null) { for (Cliente c : clientes) { %>
-                                    <option value="<%= c.getIdCliente() %>" <%= c.getIdCliente() == v.getIdCliente() ? "selected" : "" %>><%= c.getNombre() %></option>
+                                    <option value="<%= c.getIdCliente() %>" <%= v.getIdCliente() > 0 && c.getIdCliente() == v.getIdCliente() ? "selected" : "" %>><%= c.getNombre() %></option>
                                 <% } } %>
                             </select>
                             <select name="id_usuario" required>
