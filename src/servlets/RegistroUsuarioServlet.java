@@ -20,7 +20,7 @@ public class RegistroUsuarioServlet extends HttpServlet {
         if (contraseña == null || contraseña.isEmpty()) {
             contraseña = request.getParameter("contraseña");
         }
-        String rol = request.getParameter("rol");
+        String rol = "vendedor";
 
         if (nombre == null || nombre.trim().isEmpty() || correo == null || correo.trim().isEmpty()
                 || contraseña == null || contraseña.isEmpty() || rol == null || rol.trim().isEmpty()) {
@@ -31,7 +31,8 @@ public class RegistroUsuarioServlet extends HttpServlet {
         Usuario nuevo = new Usuario(0, nombre.trim(), correo.trim(), contraseña, rol.trim());
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         if (!usuarioDAO.insertarUsuario(nuevo)) {
-            response.sendRedirect(request.getContextPath() + "/jsp/registro.jsp?error=bd");
+            String error = usuarioDAO.existeCorreo(correo.trim()) ? "correo" : "bd";
+            response.sendRedirect(request.getContextPath() + "/jsp/registro.jsp?error=" + error);
             return;
         }
 

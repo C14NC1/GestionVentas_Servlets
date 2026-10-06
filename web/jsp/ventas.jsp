@@ -41,13 +41,6 @@
                     <% } } %>
                 </select>
 
-                <select name="id_usuario" required>
-                    <option value="">Selecciona vendedor</option>
-                    <% if (usuario != null) { %>
-                        <option value="<%= usuario.getIdUsuario() %>"><%= usuario.getNombre() %> (<%= usuario.getRol() %>)</option>
-                    <% } %>
-                </select>
-
                 <select name="id_producto" required>
                     <option value="">Selecciona producto</option>
                     <% if (productos != null) { for (Producto p : productos) { %>
@@ -56,7 +49,6 @@
                 </select>
 
                 <input type="number" name="cantidad" min="1" placeholder="Cantidad" required>
-                <input type="number" step="0.01" min="0" name="precio_unitario" placeholder="Precio unitario" required>
                 <button type="submit" class="btn btn-primary">Guardar venta</button>
             </form>
         </div>
@@ -123,6 +115,7 @@
                 <td>$<%= detalleActual != null ? String.format("%.2f", detalleActual.getPrecioUnitario()) : "0.00" %></td>
                 <td>$<%= String.format("%.2f", v.getTotal()) %></td>
                 <td>
+                    <% if (usuario != null && "admin".equalsIgnoreCase(usuario.getRol())) { %>
                     <div class="table-actions">
                         <form class="inline-form" action="${pageContext.request.contextPath}/VentaServlet" method="post">
                             <input type="hidden" name="accion" value="actualizar">
@@ -132,18 +125,12 @@
                                     <option value="<%= c.getIdCliente() %>" <%= v.getIdCliente() > 0 && c.getIdCliente() == v.getIdCliente() ? "selected" : "" %>><%= c.getNombre() %></option>
                                 <% } } %>
                             </select>
-                            <select name="id_usuario" required>
-                                <% if (usuario != null) { %>
-                                    <option value="<%= usuario.getIdUsuario() %>" <%= usuario.getIdUsuario() == v.getIdUsuario() ? "selected" : "" %>><%= usuario.getNombre() %></option>
-                                <% } %>
-                            </select>
                             <select name="id_producto" required>
                                 <% if (productos != null) { for (Producto p : productos) { %>
                                     <option value="<%= p.getIdProducto() %>" <%= detalleActual != null && p.getIdProducto() == detalleActual.getIdProducto() ? "selected" : "" %>><%= p.getNombre() %></option>
                                 <% } } %>
                             </select>
                             <input type="number" name="cantidad" min="1" value="<%= detalleActual != null ? detalleActual.getCantidad() : 1 %>" required>
-                            <input type="number" step="0.01" min="0" name="precio_unitario" value="<%= detalleActual != null ? detalleActual.getPrecioUnitario() : 0 %>" required>
                             <button type="submit" class="btn btn-primary">Editar</button>
                         </form>
 
@@ -153,6 +140,7 @@
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
                     </div>
+                    <% } %>
                 </td>
             </tr>
             <%

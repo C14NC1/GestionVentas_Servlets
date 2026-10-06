@@ -17,49 +17,64 @@
             <strong>Importante:</strong> para ver productos o clientes debes registrarte e iniciar sesión. El administrador puede gestionar precios, productos y clientes; el vendedor puede vender y registrar ventas, pero no modificar la base de clientes o productos.
         </div>
 
-        <div class="product-grid">
-            <div class="product-card">
-                <h3>Café Espresso</h3>
-                <p>Intenso y aromático, ideal para empezar con energía.</p>
-                <div class="precio">$1.800</div>
-                <div class="stock">En stock: 25</div>
-            </div>
-            <div class="product-card">
-                <h3>Café Latte</h3>
-                <p>Crema suave con un toque de dulzor y equilibrio.</p>
-                <div class="precio">$2.200</div>
-                <div class="stock">En stock: 18</div>
-            </div>
-            <div class="product-card">
-                <h3>Pan de Molde Integral</h3>
-                <p>Clásico y saludable para acompañar tu bebida.</p>
-                <div class="precio">$1.200</div>
-                <div class="stock">En stock: 30</div>
-            </div>
-            <div class="product-card">
-                <h3>Medialuna</h3>
-                <p>Horneada al momento, crocante por fuera y suave por dentro.</p>
-                <div class="precio">$900</div>
-                <div class="stock">En stock: 40</div>
-            </div>
-            <div class="product-card">
-                <h3>Café Capuccino</h3>
-                <p>Textura cremosa con sabor a cacao y vainilla.</p>
-                <div class="precio">$2.400</div>
-                <div class="stock">En stock: 16</div>
-            </div>
-            <div class="product-card">
-                <h3>Pan con Queso</h3>
-                <p>Perfecto para un desayuno completo y sabroso.</p>
-                <div class="precio">$1.500</div>
-                <div class="stock">En stock: 22</div>
-            </div>
-        </div>
+        <p id="catalogo-estado" role="status">Cargando productos...</p>
+        <div class="product-grid" id="catalogo-productos"></div>
     </div>
 
     <div class="bottom-actions">
         <a href="jsp/registro.jsp" class="bottom-btn">Registrarse</a>
         <a href="jsp/login.jsp" class="bottom-btn">Iniciar sesión</a>
     </div>
+    <script>
+        const catalogo = document.getElementById("catalogo-productos");
+        const estadoCatalogo = document.getElementById("catalogo-estado");
+        const formatoPrecio = new Intl.NumberFormat("es-CO", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+
+        fetch("api/productos")
+            .then(respuesta => {
+                if (!respuesta.ok) {
+                    throw new Error("No se pudo consultar el catálogo.");
+                }
+                return respuesta.json();
+            })
+            .then(productos => {
+                catalogo.replaceChildren();
+
+                if (productos.length === 0) {
+                    estadoCatalogo.textContent = "No hay productos disponibles.";
+                    return;
+                }
+
+                productos.forEach(producto => {
+                    const tarjeta = document.createElement("article");
+                    tarjeta.className = "product-card";
+
+                    const nombre = document.createElement("h3");
+                    nombre.textContent = producto.nombre;
+
+                    const descripcion = document.createElement("p");
+                    descripcion.textContent = producto.descripcion || "Sin descripción.";
+
+                    const precio = document.createElement("div");
+                    precio.className = "precio";
+                    precio.textContent = `$${formatoPrecio.format(producto.precio)}`;
+
+                    const stock = document.createElement("div");
+                    stock.className = "stock";
+                    stock.textContent = `En stock: ${producto.stock}`;
+
+                    tarjeta.append(nombre, descripcion, precio, stock);
+                    catalogo.append(tarjeta);
+                });
+
+                estadoCatalogo.textContent = "";
+            })
+            .catch(() => {
+                estadoCatalogo.textContent = "No fue posible cargar los productos.";
+            });
+    </script>
 </body>
 </html>

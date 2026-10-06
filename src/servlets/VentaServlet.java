@@ -10,7 +10,6 @@ import modelo.DetalleVenta;
 import modelo.Producto;
 import modelo.Cliente;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,14 +24,21 @@ public class VentaServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String accion = request.getParameter("accion");
+        HttpSession session = request.getSession(false);
+        modelo.Usuario usuario = (modelo.Usuario) session.getAttribute("usuario");
         VentaDAO ventaDAO = new VentaDAO();
-        DetalleVentaDAO detalleDAO = new DetalleVentaDAO();
 
         if ("eliminar".equals(accion)) {
+            if (!"admin".equalsIgnoreCase(usuario.getRol())) {
+                response.sendRedirect(request.getContextPath() + "/VentaServlet?error=permiso");
+                return;
+            }
             try {
                 int idVenta = Integer.parseInt(request.getParameter("id_venta"));
-                detalleDAO.eliminarDetallePorVenta(idVenta);
-                ventaDAO.eliminarVenta(idVenta);
+                if (!ventaDAO.eliminarVentaCompleta(idVenta)) {
+                    response.sendRedirect(request.getContextPath() + "/VentaServlet?error=guardar");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 response.sendRedirect(request.getContextPath() + "/VentaServlet?error=datos");
                 return;
@@ -42,22 +48,25 @@ public class VentaServlet extends HttpServlet {
         }
 
         if ("actualizar".equals(accion)) {
+            if (!"admin".equalsIgnoreCase(usuario.getRol())) {
+                response.sendRedirect(request.getContextPath() + "/VentaServlet?error=permiso");
+                return;
+            }
             try {
                 int idVenta = Integer.parseInt(request.getParameter("id_venta"));
                 int idCliente = Integer.parseInt(request.getParameter("id_cliente"));
-                int idUsuario = Integer.parseInt(request.getParameter("id_usuario"));
                 int idProducto = Integer.parseInt(request.getParameter("id_producto"));
                 int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-                double precioUnitario = Double.parseDouble(request.getParameter("precio_unitario"));
 
-                if (idCliente <= 0 || idUsuario <= 0 || idProducto <= 0 || cantidad <= 0 || precioUnitario <= 0) {
+                if (idCliente <= 0 || idProducto <= 0 || cantidad <= 0) {
                     response.sendRedirect(request.getContextPath() + "/VentaServlet?error=datos");
                     return;
                 }
 
-                double subtotal = cantidad * precioUnitario;
-                ventaDAO.actualizarVenta(idVenta, idCliente, idUsuario, subtotal);
-                detalleDAO.actualizarDetalle(idVenta, idProducto, cantidad, precioUnitario, subtotal);
+                if (!ventaDAO.actualizarVentaConDetalle(idVenta, idCliente, idProducto, cantidad)) {
+                    response.sendRedirect(request.getContextPath() + "/VentaServlet?error=guardar");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 response.sendRedirect(request.getContextPath() + "/VentaServlet?error=datos");
                 return;
@@ -67,38 +76,29 @@ public class VentaServlet extends HttpServlet {
         }
 
         int idCliente;
-        int idUsuario;
         int idProducto;
         int cantidad;
-        double precioUnitario;
         try {
             idCliente = Integer.parseInt(request.getParameter("id_cliente"));
-            idUsuario = Integer.parseInt(request.getParameter("id_usuario"));
             idProducto = Integer.parseInt(request.getParameter("id_producto"));
             cantidad = Integer.parseInt(request.getParameter("cantidad"));
-            precioUnitario = Double.parseDouble(request.getParameter("precio_unitario"));
         } catch (NumberFormatException | NullPointerException e) {
             response.sendRedirect(request.getContextPath() + "/VentaServlet?error=datos");
             return;
         }
 
-        if (idCliente <= 0 || idUsuario <= 0 || idProducto <= 0 || cantidad <= 0 || precioUnitario <= 0) {
+        if (idCliente <= 0 || idProducto <= 0 || cantidad <= 0) {
             response.sendRedirect(request.getContextPath() + "/VentaServlet?error=datos");
             return;
         }
 
-        double total = cantidad * precioUnitario;
-        Venta nuevaVenta = new Venta(0, new Date(), idCliente, idUsuario, total);
-        int idVentaGenerado = ventaDAO.insertarVenta(nuevaVenta);
+        int idVentaGenerado = ventaDAO.registrarVenta(
+            idCliente, usuario.getIdUsuario(), idProducto, cantidad);
 
         if (idVentaGenerado <= 0) {
             response.sendRedirect(request.getContextPath() + "/VentaServlet?error=guardar");
             return;
         }
-
-        // Guarda el producto vendido como detalle de la venta creada.
-        DetalleVenta detalle = new DetalleVenta(0, idVentaGenerado, idProducto, cantidad, precioUnitario, total);
-        detalleDAO.insertarDetalle(detalle);
 
         response.sendRedirect(request.getContextPath() + "/VentaServlet?success=1");
     }

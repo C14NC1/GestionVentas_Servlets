@@ -21,6 +21,9 @@
             <a href="${pageContext.request.contextPath}/ClienteServlet">Ver clientes</a>
             <a href="${pageContext.request.contextPath}/ProductoServlet">Ver productos</a>
             <a href="${pageContext.request.contextPath}/VentaServlet">Ver ventas</a>
+            <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
+                <button type="submit">Cerrar sesión</button>
+            </form>
         </nav>
 
         <section class="info-box">

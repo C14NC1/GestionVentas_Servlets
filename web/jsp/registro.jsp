@@ -25,17 +25,12 @@
             <input type="email" name="correo" required>
             <label>Contraseña:</label>
             <input type="password" name="contrasena" required>
-            <label>Rol:</label>
-            <select name="rol">
-                <option value="admin">Admin</option>
-                <option value="vendedor">Vendedor</option>
-            </select>
             <button type="submit">Registrar</button>
         </form>
 
         <div class="info">
             <strong>Importante:</strong><br>
-            Si creas una cuenta como admin podrás administrar precios, productos y clientes. Si eliges vendedor, tendrás acceso de consulta y ventas, pero no podrás modificar estos datos.
+            Las cuentas nuevas se registran con permisos de vendedor. La asignación de administrador debe realizarla una persona administradora del sistema.
         </div>
 
         <% 
@@ -46,6 +41,8 @@
             <p style="color:green; margin-top: 15px;">Usuario registrado correctamente. Ahora puede iniciar sesión.</p>
         <% } else if ("bd".equals(error)) { %>
             <p style="color:red; margin-top: 15px;">No se pudo guardar el usuario. Verifique la conexión y la base de datos.</p>
+        <% } else if ("correo".equals(error)) { %>
+            <p style="color:red; margin-top: 15px;">Ese correo ya está registrado. <a href="${pageContext.request.contextPath}/jsp/login.jsp">Inicia sesión aquí.</a></p>
         <% } else if ("datos".equals(error)) { %>
             <p style="color:red; margin-top: 15px;">Debe completar todos los datos del registro.</p>
         <% } %>

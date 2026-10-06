@@ -24,8 +24,8 @@ public class LoginServlet extends HttpServlet {
         Usuario usuario = usuarioDAO.validarLogin(correo, contraseña);
 
         if (usuario != null) {
-            // Guarda el usuario autenticado para controlar su sesión y rol.
             HttpSession sesion = request.getSession();
+            request.changeSessionId();
             sesion.setAttribute("usuario", usuario);
             response.sendRedirect(request.getContextPath() + "/jsp/index.jsp");
         } else {

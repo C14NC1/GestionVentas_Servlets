@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Conexion {
-    // Datos de acceso a la base de datos
-    private static final String URL = "jdbc:mysql://localhost:3306/gestion_ventas";
-    private static final String USER = "root"; 
-    private static final String PASSWORD = "godlawessadlaw"; 
+    private static final String URL = System.getenv().getOrDefault(
+            "GESTION_DB_URL", "jdbc:mysql://localhost:3306/gestion_ventas");
+    private static final String USER = System.getenv().getOrDefault("GESTION_DB_USER", "root");
+    private static final String PASSWORD = System.getenv().getOrDefault("GESTION_DB_PASSWORD", "");
 
     public Connection getConnection() {
         Connection con = null;
