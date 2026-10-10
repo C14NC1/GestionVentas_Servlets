@@ -11,6 +11,10 @@ CREATE TABLE usuarios (
     rol ENUM('admin','vendedor') NOT NULL
 );
 
+-- Cuenta inicial; el primer inicio de sesión convierte la contraseña a hash.
+INSERT INTO usuarios (nombre, correo, contraseña, rol)
+VALUES ('Administrador', 'admin@correo.com', '1234', 'admin');
+
 -- Tabla de clientes
 CREATE TABLE clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,

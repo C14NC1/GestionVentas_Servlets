@@ -1,4 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="modelo.Usuario" %>
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    boolean esAdmin = usuario != null && "admin".equalsIgnoreCase(usuario.getRol());
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,12 +21,13 @@
         </header>
 
         <nav class="top-nav">
-            <a href="login.jsp">Iniciar sesión</a>
-            <a href="registro.jsp">Registrarse</a>
             <a href="${pageContext.request.contextPath}/ClienteServlet">Ver clientes</a>
             <a href="${pageContext.request.contextPath}/ProductoServlet">Ver productos</a>
             <a href="${pageContext.request.contextPath}/VentaServlet">Ver ventas</a>
-            <form action="${pageContext.request.contextPath}/LogoutServlet" method="post">
+            <% if (esAdmin) { %>
+            <a href="${pageContext.request.contextPath}/EmpleadoServlet">Empleados</a>
+            <% } %>
+            <form action="${pageContext.request.contextPath}/LogoutServlet" method="post" aria-label="Cerrar sesión">
                 <button type="submit">Cerrar sesión</button>
             </form>
         </nav>

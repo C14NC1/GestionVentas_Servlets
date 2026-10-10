@@ -128,4 +128,37 @@ public class UsuarioDAO {
         }
         return lista;
     }
+
+    public List<Usuario> listarEmpleados() {
+        List<Usuario> lista = new ArrayList<>();
+        String sql = "SELECT id_usuario, nombre, correo, rol FROM usuarios WHERE rol='vendedor' ORDER BY nombre";
+        try (Connection con = conexion.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(new Usuario(
+                    rs.getInt("id_usuario"),
+                    rs.getString("nombre"),
+                    rs.getString("correo"),
+                    null,
+                    rs.getString("rol")
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println("Error en listarEmpleados: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public boolean eliminarEmpleado(int idUsuario) {
+        String sql = "DELETE FROM usuarios WHERE id_usuario=? AND rol='vendedor'";
+        try (Connection con = conexion.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            return ps.executeUpdate() == 1;
+        } catch (Exception e) {
+            System.out.println("Error en eliminarEmpleado: " + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -30,8 +30,13 @@ public class SecurityFilter implements Filter {
 
         HttpSession session = httpRequest.getSession(false);
         Usuario usuario = session == null ? null : (Usuario) session.getAttribute("usuario");
-        if (usuario != null) {
+        if (usuario != null && (!requiereAdmin(path) || "admin".equalsIgnoreCase(usuario.getRol()))) {
             chain.doFilter(request, response);
+            return;
+        }
+
+        if (usuario != null) {
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
@@ -53,7 +58,13 @@ public class SecurityFilter implements Filter {
                 || "/jsp/index.jsp".equals(path)
                 || "/jsp/clientes.jsp".equals(path)
                 || "/jsp/productos.jsp".equals(path)
-                || "/jsp/ventas.jsp".equals(path);
+                || "/jsp/ventas.jsp".equals(path)
+                || "/EmpleadoServlet".equals(path)
+                || "/jsp/empleados.jsp".equals(path);
+    }
+
+    private boolean requiereAdmin(String path) {
+        return "/EmpleadoServlet".equals(path) || "/jsp/empleados.jsp".equals(path);
     }
 
     @Override

@@ -4,7 +4,8 @@ Proyecto académico de gestión de ventas desarrollado con Java, Servlets, JSP y
 
 ## Funcionalidades
 
-- Registro e inicio de sesión de usuarios.
+- Inicio de sesión para cuentas registradas.
+- Gestión de empleados disponible para el administrador.
 - Gestión y consulta de clientes.
 - Gestión y consulta de productos.
 - Registro y consulta de ventas.
@@ -29,7 +30,16 @@ Proyecto académico de gestión de ventas desarrollado con Java, Servlets, JSP y
 
 ## Ejecución
 
-Se requiere tener configurados MySQL y Apache Tomcat 9. La base de datos se crea ejecutando `SQL.sql` y las credenciales se configuran en `src/dao/Conexion.java`. Luego se compilan las clases, se despliega la aplicación en `webapps/GestionVentas` y se inicia Tomcat.
+Se requiere tener configurados MySQL y Apache Tomcat 9. La base de datos se crea ejecutando `SQL.sql`; este script crea el administrador inicial `admin@correo.com` con contraseña `1234`. En el primer inicio de sesión, la contraseña se reemplaza por su hash. Las credenciales de conexión se configuran en `src/dao/Conexion.java`. Luego se compilan las clases, se despliega la aplicación en `webapps/GestionVentas` y se inicia Tomcat.
+
+En bases de datos ya creadas, agrega la cuenta inicial si aún no existe con:
+
+```sql
+INSERT INTO usuarios (nombre, correo, contraseña, rol)
+VALUES ('Administrador', 'admin@correo.com', '1234', 'admin');
+```
+
+Después de iniciar sesión como administrador, usa el módulo **Empleados** para registrar y eliminar cuentas de vendedor.
 
 Aplicación:
 

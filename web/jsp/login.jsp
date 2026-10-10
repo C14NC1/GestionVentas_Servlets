@@ -18,19 +18,13 @@
 <body>
     <div class="wrap">
         <h2>Iniciar sesión</h2>
-        <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
+        <form action="${pageContext.request.contextPath}/LoginServlet" method="post" autocomplete="off">
             <label>Correo:</label>
-            <input type="email" name="correo" required>
+            <input type="email" name="correo" autocomplete="off" required>
             <label>Contraseña:</label>
-            <input type="password" name="contrasena" required>
+            <input type="password" name="contrasena" autocomplete="off" required>
             <button type="submit">Ingresar</button>
         </form>
-
-        <div class="info">
-            <strong>Roles:</strong><br>
-            • Admin: puede gestionar precios, agregar, editar y eliminar productos; también puede agregar y eliminar clientes.<br>
-            • Vendedor: solo puede consultar, pero no puede modificar productos ni clientes.
-        </div>
 
         <% 
             String error = request.getParameter("error");
@@ -41,7 +35,6 @@
             <p style="color:#8a4d26; margin-top: 15px;">Debes iniciar sesión para acceder a esta sección.</p>
         <% } %>
 
-        <a class="link" href="${pageContext.request.contextPath}/jsp/registro.jsp">¿No tienes cuenta? Regístrate</a>
     </div>
 </body>
 </html>
